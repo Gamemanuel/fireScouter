@@ -21,7 +21,11 @@
         const canvas = document.getElementById("drawingPad");
         const ctx = canvas.getContext("2d");
         let drawing = false;
-
+        const background = new Image();
+        background.src = "into-the-deep-meepmeep-custom-field-images-printer-friendly-v0-qsax5fraignd1.webp";
+        background.onload = () => {
+            ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+        };
         canvas.addEventListener("mousedown", () => { drawing = true; });
         canvas.addEventListener("mouseup", () => { drawing = false; ctx.beginPath(); });
         canvas.addEventListener("mousemove", draw);
@@ -47,6 +51,7 @@
 
         function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(background, 0, 0, canvas.width, canvas.height); // Redraw the background
         }
     </script>
 </body>
