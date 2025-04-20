@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light and Dark Mode</title>
+    <link href="SegoeFluentIcons.ttf" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        #modeSwitcher {
+            cursor: pointer;
+            margin: 15px 30px; /* Increased padding */
+            border: 1px solid #ccc;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Space between icon and text */
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        canvas {
+            border: 1px solid transparent;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        button {
+            font-family: 'Segoe Fluent Icons';
+            font-size: 24px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 5px;
+            margin-bottom: 5px;
+            color: black; /* Default icon color for light mode */
+        }
+        button:hover {
+            background-color: #f0f0f0;
+            border-radius: 16%;
+        }
+
+        /* dark mode styles */
+        body.dark-mode button:hover {
+            background-color: #333333; /* Darker background for contrast in dark mode */
+        }
+        body.dark-mode button {
+            color: white; /* Icon color for dark mode */
+        }
+        #modeSwitcher.dark {
+            background-color: black;
+            color: white;
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        body.dark-mode .icon {
+            color: white;
+        }   
+    </style>
+</head>
+<body>
+    <h1>Image Editor Form</h1>
+    <button id="modeSwitcher">
+        <span id="modeIcon" style="font-family: 'Segoe Fluent Icons';">&#xE706;</span> <!-- Light Mode Icon -->
+        <span id="modeText">Switch to Dark Mode</span>
+    </button>
+    <canvas id="drawingCanvas" width="500" height="500"></canvas>
+    <div class="buttons">
+        <button id="clearButton">&#xE74D;</button> <!-- Delete Icon -->
+        <button id="backButton">&#xE72B;</button> <!-- Backspace Icon -->
+    </div>
+    <form id="imageForm">
+        <input type="hidden" name="imageData" id="imageData">
+        <button type="submit" style="display: inline-flex; align-items: center; gap: 8px;">
+            <span style="font-family: 'Segoe Fluent Icons';">&#xE74E;</span>
+            <span>Save</span>
+        </button> <!-- Save Icon with text -->
+    </form>
+
+    <script>
+        
+        // Light and Dark Mode Switcher
+            const modeIcon = document.getElementById('modeIcon');
+            const modeText = document.getElementById('modeText');
+        function updateIcons() {
+            if (document.body.classList.contains('dark-mode')) {
+                modeIcon.textContent = '\uE706'; // Light Mode Icon
+                modeText.textContent = 'Switch to Light Mode';
+                modeSwitcher.classList.add('dark');
+            } else {
+                modeIcon.textContent = '\uE708'; // Dark Mode Icon
+                modeText.textContent = 'Switch to Dark Mode';
+                modeSwitcher.classList.remove('dark');
+            }
+        }
+
+        const modeSwitcher = document.getElementById('modeSwitcher');
+        modeSwitcher.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            updateIcons();
+        });
+
+        updateIcons();
+        
+
+        // Load the image onto the canvas
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        const image = new Image();
+        image.src = 'into-the-deep-meepmeep-custom-field-images-printer-friendly-v0-qsax5fraignd1.webp';
+        image.onload = () => {
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        };
+
+        // Drawing functionality
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            lastX = e.clientX - rect.left;
+            lastY = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+            ctx.beginPath(); // Reset path
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDrawing) {
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.strokeStyle = 'red'; // Line color
+                ctx.lineWidth = 5; // Line thickness
+                ctx.lineJoin = 'round';
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                lastX = x;
+                lastY = y;
+            }
+        });
+
+        // Clear button functionality
+        document.getElementById('clearButton').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        });
+
+        // Back button functionality
+        document.getElementById('backButton').addEventListener('click', () => {
+            window.history.back();
+        });
+
+        // Form submission functionality
+        document.getElementById('imageForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const imageData = canvas.toDataURL('image/png');
+            document.getElementById('imageData').value = imageData;
+
+            fetch('YOUR_GOOGLE_SHEETS_API_URL', {
+                method: 'POST',
+                body: JSON.stringify({ imageData }),
+                headers: { 'Content-Type': 'application/json' }
+            }).then(response => {
+                alert('Image submitted successfully!');
+            }).catch(error => {
+                console.error('Error submitting image:', error);
+            });
+        });
+    </script>
+</body>
+</html>

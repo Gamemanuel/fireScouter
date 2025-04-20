@@ -5,53 +5,160 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drawing Pad</title>
     <style>
-        body { text-align: center; }
-        canvas { border: 1px solid black; cursor: crosshair; }
-        button { margin-top: 10px; padding: 10px; }
+        body {
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            border: 1px solid black;
+            cursor: crosshair;
+            display: block;
+            margin: auto;
+        }
+        #overlayBackground {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            padding: 20px;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+        #closeOverlayButton, #openOverlayButton {
+            padding: 10px;
+        }
+        #drawingPad {
+            width: 100%;
+            height: 100%;
+        }
+        #closeOverlayButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1100;
+        }
+        #openOverlayButton {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>Drawing Pad</h1>
-    <canvas id="drawingPad" width="600" height="400"></canvas>
+    <div id="overlayBackground">
+        <canvas id="drawingPad" style="width: 100%; height: 100%;"></canvas>
+        <button id="closeOverlayButton" onclick="toggleOverlay()">Close Drawing Pad</button>
+    </div>
+    <button id="openOverlayButton" onclick="toggleOverlay()">Open Drawing Pad</button>
     <br>
     <button onclick="saveDrawing()">Save as PNG</button>
     <button onclick="clearCanvas()">Clear</button>
 
     <script>
+        const overlayBackground = document.getElementById("overlayBackground");
         const canvas = document.getElementById("drawingPad");
         const ctx = canvas.getContext("2d");
-        let drawing = false;
-        const background = new Image();
-        background.src = "into-the-deep-meepmeep-custom-field-images-printer-friendly-v0-qsax5fraignd1.webp";
-        background.onload = () => {
-            ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    
+        const backgroundImage = new Image();
+        backgroundImage.src = "into-the-deep-meepmeep-custom-field-images-printer-friendly-v0-qsax5fraignd1.webp"; // Replace with the actual path to your image
+    
+        backgroundImage.onload = () => {
+            const imgAspectRatio = backgroundImage.width / backgroundImage.height;
+            const canvasAspectRatio = canvas.width / canvas.height;
+
+            let drawWidth, drawHeight;
+            if (canvasAspectRatio > imgAspectRatio) {
+                drawHeight = canvas.height / devicePixelRatio;
+                drawWidth = drawHeight * imgAspectRatio;
+            } else {
+                drawWidth = canvas.width / devicePixelRatio;
+                drawHeight = drawWidth / imgAspectRatio;
+            }
+
+            const offsetX = (canvas.width / devicePixelRatio - drawWidth) / 2;
+            const offsetY = (canvas.height / devicePixelRatio - drawHeight) / 2;
+
+            ctx.drawImage(backgroundImage, offsetX, offsetY, drawWidth, drawHeight);
         };
-        canvas.addEventListener("mousedown", () => { drawing = true; });
-        canvas.addEventListener("mouseup", () => { drawing = false; ctx.beginPath(); });
-        canvas.addEventListener("mousemove", draw);
-
-        function draw(event) {
-            if (!drawing) return;
-            ctx.lineWidth = 5;
-            ctx.lineCap = "round";
-            ctx.strokeStyle = "black";
-
-            ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+    
+        function toggleOverlay() {
+            if (overlayBackground.style.display === "block") {
+                overlayBackground.style.display = "none";
+            } else {
+                overlayBackground.style.display = "block";
+                resizeCanvas(); // Ensure the canvas resizes correctly when the overlay is opened
+            }
         }
-
+    
+        function resizeCanvas() {
+            const devicePixelRatio = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * devicePixelRatio;
+            canvas.height = rect.height * devicePixelRatio;
+            ctx.scale(devicePixelRatio, devicePixelRatio);
+            ctx.drawImage(backgroundImage, 0, 0, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio); // Redraw the background image
+        }
+    const clearButton = document.createElement("button");
+    clearButton.textContent = "Clear";
+    clearButton.style.position = "absolute";
+    clearButton.style.top = "50px"; // Position it underneath the close button
+    clearButton.style.right = "10px"; // Align with the close button
+    clearButton.style.zIndex = "1100";
+    clearButton.onclick = clearCanvas;
+    overlayBackground.appendChild(clearButton);
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+    
+        let drawing = false;
+        let lastPosition = null;
+    
+        function adjustCoordinates(event) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (event.clientX - rect.left) * (canvas.width / rect.width),
+                y: (event.clientY - rect.top) * (canvas.height / rect.height)
+            };
+        }
+    
+        canvas.addEventListener("mousedown", (event) => {
+            drawing = true;
+            lastPosition = adjustCoordinates(event);
+        });
+    
+        canvas.addEventListener("mousemove", (event) => {
+            if (!drawing) return;
+            const { x, y } = adjustCoordinates(event);
+            if (lastPosition) {
+                ctx.lineWidth = 5;
+                ctx.lineCap = "round";
+                ctx.strokeStyle = "black";
+                ctx.beginPath();
+                ctx.moveTo(lastPosition.x, lastPosition.y);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+            }
+            lastPosition = { x, y };
+        });
+    
+        canvas.addEventListener("mouseup", () => {
+            drawing = false;
+            lastPosition = null;
+        });
+    
         function saveDrawing() {
             const link = document.createElement("a");
             link.download = "drawing.png";
             link.href = canvas.toDataURL("image/png");
             link.click();
         }
-
+    
         function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(background, 0, 0, canvas.width, canvas.height); // Redraw the background
+            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // Redraw the background image
         }
     </script>
 </body>

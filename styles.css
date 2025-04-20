@@ -1,0 +1,248 @@
+@font-face {
+    font-family: "Segoe Fluent Icons";
+    src: url("SegoeFluentIcons.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+h1 {
+    font-weight: bold;
+    font-size: 24px;
+    color: #333333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+body.dark-mode h1 {
+    color: #ffffff; /* Ensure header text is white in dark mode */
+}
+
+label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    background: white;
+    color: #ffffff;
+    font-size: 0.9rem;
+    color: white;
+}
+
+.question {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+button {
+    font-family: "Segoe Fluent Icons", sans-serif;
+    padding: 5px;
+    border: transparent;
+    border-radius: 8px;
+}
+
+form:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.4); /* More pronounced shadow */
+}
+
+.inputContainer {
+    padding: 20px 30px;
+    width: 90%;
+    max-width: 500px;
+    height: 90%;
+}
+
+.question label {
+    display: block;
+    font-size: 14px;
+    color: #000000;
+    margin-bottom: 5px;
+}
+
+.question input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    color: black;
+}
+
+.question input:focus {
+    border-color: #0078d7;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 120, 215, 0.5);
+}
+
+.clearButton, .nextButton {
+    display: inline-block;
+    width: 48%;
+    padding: 10px;
+    font-size: 16px;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.clearButton {
+    background-color: #d9534f;
+}
+
+.clearButton:hover, .clearButton:focus {
+    background-color: #c9302c;
+}
+
+.nextButton {
+    background-color: #5cb85c;
+}
+
+.nextButton:hover, .nextButton:focus {
+    background-color: #4cae4c;
+}
+
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    background-color: rgb(58, 28, 182);
+    color: #ffffff;
+}
+
+h1.dark-mode {
+    color: #ffffff; /* Ensure header text is white in dark mode */
+}
+
+.inputContainer input {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-mode .inputContainer input {
+    background-color: #333333;
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+.inputContainer label {
+    color: #000000;
+}
+
+body.dark-mode .inputContainer label {
+    color: #ffffff;
+}
+
+button {
+    cursor: pointer;
+}
+.inputContainer input {
+    background-color: rgba(255, 255, 255, 0.15); /* Slightly more transparent */
+    backdrop-filter: blur(12px) saturate(180%); /* Enhanced blur and saturation */
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    color: #000000;
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 10px;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+body.dark-mode .inputContainer input {
+    background-color: rgba(41, 41, 41, 0.2); /* Semi-transparent dark */
+    backdrop-filter: blur(10px); /* Glassmorphism effect */
+    border: 1px solid transparent;
+    color: #e0e0e0;
+}
+#toggleDarkMode {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-family: 'Segoe Fluent Icons';
+    color: #000000;
+    transition: color 0.3s, transform 0.3s;
+}
+
+#toggleDarkMode:hover {
+    transform: scale(1.2);
+}
+
+body.dark-mode #toggleDarkMode {
+    color: #ffffff;
+}
+
+body {
+    transition: background-color 0.3s, color 0.3s;
+    font-family: Arial, sans-serif;
+}
+
+/* Removed duplicate rules to avoid conflicts */
+
+.inputContainer label {
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 4px;
+    display: block;
+}
+
+body.dark-mode .inputContainer label {
+    color: #e0e0e0;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.clearButton {
+    background-color: #ff4d4d;
+    color: #ffffff;
+}
+
+body.dark-mode .clearButton {
+    background-color: #ff6666;
+}
+
+.nextButton {
+    background-color: #4caf50;
+    color: #ffffff;
+}
+
+body.dark-mode .nextButton {
+    background-color: #66bb6a;
+}

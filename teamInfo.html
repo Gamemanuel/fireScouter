@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Information</title>
+    <link rel="stylesheet" href="styles.css">
+</head> 
+<style>
+    
+</style>
+<div class="inputContainer">
+    <h1>Team Information</h1>
+
+    <div class="question">
+        <label>Team Name</label>
+        <input type="text" placeholder="Team Name" required>
+    </div>
+
+    <div class="question">
+        <label>Team Number</label>
+        <input type="number" placeholder="Team Number" required>
+    </div>
+
+    <div class="question">
+        <label>Drivetrain Type</label>
+        <input type="text" placeholder="Drivetrain Type" required>
+    </div>
+
+    <div class="question">
+        <label>How Many Drivers Do you Have?</label>
+        <input type="number" placeholder="number of drivers" required>
+    </div>
+
+    <div class="question">
+        <label>What is your Tool?</label>
+        <input type="text" placeholder="Tool Type" required>
+    </div>
+    <div class="question">
+        <label>Notes on Robot</label>
+        <input type="text" placeholder="Notes" required>
+    </div>
+
+    <div class="question">
+        <label>How did you preform at the last competition?</label>
+        <input type="text" placeholder="previous preformance" required>
+    </div>
+
+    <div class="question">
+        <label>How heavy is your Robot?</label>
+        <input type="number" placeholder="weight" required>
+    </div>
+
+    <div class="question">
+        <label>How fast does your Robot travel?</label>
+        <input type="text" placeholder="Robot speed" required>
+    </div>
+
+    <div class="question">
+        <label>How fast does your Robot accellerate?</label>
+        <input type="text" placeholder="Robot accelleration" required>
+    </div>
+    
+    <button class="clearButton">&#xE74D;</button>
+    <button class="nextButton">&#xebe7; </button>
+</div>
+
+<button id="toggleDarkMode">Toggle Dark Mode</button>
+
+<script>
+    const toggleDarkModeButton = document.getElementById('toggleDarkMode');
+    toggleDarkModeButton.innerHTML = '\uE706'; // Initial icon (sun)
+
+    toggleDarkModeButton.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        toggleDarkModeButton.innerHTML = document.body.classList.contains('dark-mode') ? '\uE708' : '\uE706'; // Moon and Sun icons
+    });
+</script>
+
+</html>
+<script>
+    document.querySelector('.clearButton').addEventListener('click', () => {
+        document.querySelectorAll('.inputContainer input').forEach(input => input.value = '');
+    });
+</script>
+</style>

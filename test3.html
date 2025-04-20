@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Information</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Include the Segoe Fluent Icons font */
+        @font-face {
+            font-family: "Segoe Fluent Icons";
+            src: url("fonts/SegoeFluentIcons.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Styling for icons */
+        .icon {
+            font-family: "Segoe Fluent Icons", sans-serif;
+            font-size: 1.5rem;
+            margin-right: 0.5em;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .dark-theme {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .question {
+            margin: 1em 0;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Team Information</h1>
+        <button id="theme-toggle" title="Switch Theme">
+            <span class="icon">&#xE706;</span>
+        </button>
+    </header>
+
+    <div class="question">
+        <label><span class="icon">&#xECAA;</span> Team Name</label>
+        <input type="text" placeholder="Team Name" required>
+    </div>
+
+    <div class="question">
+        <label><span class="icon">&#xE8BB;</span> Team Number</label>
+        <input type="number" placeholder="Team Number" required>
+    </div>
+
+    <div class="question">
+        <label><span class="icon">&#xE8C3;</span> Drivetrain Type</label>
+        <input type="text" placeholder="Drivetrain Type" required>
+    </div>
+
+    <div class="question">
+        <label><span class="icon">&#xE77B;</span> How Many Drivers Do you Have?</label>
+        <input type="number" placeholder="Number of Drivers" required>
+    </div>
+
+    <div class="question">
+        <label><span class="icon">&#xE7C3;</span> What is your Tool?</label>
+        <input type="text" placeholder="Tool Type" required>
+    </div>
+
+    <div class="question">
+        <label><span class="icon">&#xE90A;</span> Notes on Robot</label>
+        <input type="text" placeholder="Notes" required>
+    </div>
+
+    <div class="question">
+        <label><span class="icon">&#xE94D;</span> How did you perform at the last competition?</label>
+        <input type="text" placeholder="Previous Performance" required>
+    </div>
+
+    <div class="question">
+        <label><span class="icon">&#xE7F4;</span> How heavy is your Robot?</label>
+        <input type="number" placeholder="Weight" required>
+    </div>
+
+    <div class="question">
+        <label><span class="icon">&#xE730;</span> How fast does your Robot travel?</label>
+        <input type="text" placeholder="Robot Speed" required>
+    </div>
+
+    <div class="question">
+        <label><span class="icon">&#xE768;</span> How fast does your Robot accelerate?</label>
+        <input type="text" placeholder="Robot Acceleration" required>
+    </div>
+
+    <button>Next</button>
+    <button>Clear</button>
+
+    <script>
+        const themeToggle = document.getElementById("theme-toggle");
+        document.body.classList.add("dark-theme"); // Default to dark theme
+
+        themeToggle.addEventListener("click", () => {
+            document.body.classList.toggle("light-theme");
+        });
+    </script>
+</body>
+</html>
